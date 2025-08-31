@@ -6,6 +6,8 @@ namespace RealTimeWeatherMonitoring.Observers.Subscribers
     public class RainBot : ISubscriber
     {
         private readonly RainBotConfig _rainBotConfig;
+        public string Name => GetType().Name;
+        public bool Enabled => _rainBotConfig.Enabled;
 
         public RainBot(RainBotConfig rainBotConfig)
         {
@@ -14,7 +16,7 @@ namespace RealTimeWeatherMonitoring.Observers.Subscribers
 
         public void Update(WeatherData weatherData)
         {
-            if (weatherData.Humidity > _rainBotConfig.HumidityThreshold)
+            if (Enabled && weatherData.Humidity >= _rainBotConfig.HumidityThreshold)
             {
                 Activate();
             }
@@ -22,11 +24,8 @@ namespace RealTimeWeatherMonitoring.Observers.Subscribers
 
         private void Activate()
         {
-            if (_rainBotConfig.Enabled)
-            {
-                Console.WriteLine($"activated!");
-                Console.WriteLine(_rainBotConfig.Message);
-            }
+            Console.WriteLine($"{Name} activated!");
+            Console.WriteLine(_rainBotConfig.Message);
         }
 
     }

@@ -1,15 +1,18 @@
-﻿using RealTimeWeatherMonitoring.Models;
-using System.Text.Json;
+﻿using Microsoft.Extensions.Configuration;
+using RealTimeWeatherMonitoring.DTOs;
 
 namespace RealTimeWeatherMonitoring.Utilities
 {
     public static class ConfigLoader
     {
-        public static BotsConfig Load(string path)
+        public static BotsConfig Load(string path = "appsettings.json")
         {
-            var json = File.ReadAllText(path);
-            return JsonSerializer.Deserialize<BotsConfig>(json)
-                   ?? new BotsConfig();
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile(path, optional: false, reloadOnChange: true)
+                .Build();
+
+            return configuration.GetSection("Bots").Get<BotsConfig>() ?? new BotsConfig();
         }
     }
 }

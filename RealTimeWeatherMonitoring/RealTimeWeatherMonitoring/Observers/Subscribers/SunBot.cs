@@ -6,6 +6,8 @@ namespace RealTimeWeatherMonitoring.Observers.Subscribers
     public class SunBot : ISubscriber
     {
         private readonly SunBotConfig _sunBotConfig;
+        public string Name => GetType().Name;
+        public bool Enabled => _sunBotConfig.Enabled;
 
         public SunBot(SunBotConfig sunBotConfig)
         {
@@ -14,7 +16,7 @@ namespace RealTimeWeatherMonitoring.Observers.Subscribers
 
         public void Update(WeatherData weatherData)
         {
-            if (weatherData.Temperature > _sunBotConfig.TemperatureThreshold)
+            if (Enabled && weatherData.Temperature >= _sunBotConfig.TemperatureThreshold)
             {
                 Activate();
             }
@@ -22,12 +24,8 @@ namespace RealTimeWeatherMonitoring.Observers.Subscribers
 
         private void Activate()
         {
-            if (_sunBotConfig.Enabled)
-            {
-                Console.WriteLine($"activated!");
-                Console.WriteLine(_sunBotConfig.Message);
-            }
+            Console.WriteLine($"{Name} activated!");
+            Console.WriteLine(_sunBotConfig.Message);
         }
-
     }
 }

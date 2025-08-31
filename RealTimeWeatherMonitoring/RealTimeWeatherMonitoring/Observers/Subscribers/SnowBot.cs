@@ -6,6 +6,8 @@ namespace RealTimeWeatherMonitoring.Observers.Subscribers
     public class SnowBot : ISubscriber
     {
         private readonly SnowBotConfig _snowBotConfig;
+        public string Name => GetType().Name;
+        public bool Enabled => _snowBotConfig.Enabled;
 
         public SnowBot(SnowBotConfig snowBotConfig)
         {
@@ -14,7 +16,7 @@ namespace RealTimeWeatherMonitoring.Observers.Subscribers
 
         public void Update(WeatherData weatherData)
         {
-            if (weatherData.Temperature < _snowBotConfig.TemperatureThreshold)
+            if (Enabled && weatherData.Temperature <= _snowBotConfig.TemperatureThreshold)
             {
                 Activate();
             }
@@ -22,11 +24,8 @@ namespace RealTimeWeatherMonitoring.Observers.Subscribers
 
         private void Activate()
         {
-            if (_snowBotConfig.Enabled)
-            {
-                Console.WriteLine($"activated!");
-                Console.WriteLine(_snowBotConfig.Message);
-            }
+            Console.WriteLine($"{Name} activated!");
+            Console.WriteLine(_snowBotConfig.Message);
         }
 
     }
