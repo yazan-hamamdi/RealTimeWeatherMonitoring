@@ -3,30 +3,16 @@ using RealTimeWeatherMonitoring.Models;
 
 namespace RealTimeWeatherMonitoring.Observers.Subscribers
 {
-    public class SnowBot : ISubscriber
+    public class SnowBot : BaseBot<SnowBotConfig>
     {
-        private readonly SnowBotConfig _snowBotConfig;
-        public string Name => GetType().Name;
-        public bool Enabled => _snowBotConfig.Enabled;
+        public SnowBot(SnowBotConfig config) : base(config) { }
 
-        public SnowBot(SnowBotConfig snowBotConfig)
+        public override void Update(WeatherData weatherData)
         {
-            _snowBotConfig = snowBotConfig;
-        }
-
-        public void Update(WeatherData weatherData)
-        {
-            if (Enabled && weatherData.Temperature <= _snowBotConfig.TemperatureThreshold)
+            if (Enabled && weatherData.Temperature <= _config.TemperatureThreshold)
             {
                 Activate();
             }
         }
-
-        private void Activate()
-        {
-            Console.WriteLine($"{Name} activated!");
-            Console.WriteLine(_snowBotConfig.Message);
-        }
-
     }
 }

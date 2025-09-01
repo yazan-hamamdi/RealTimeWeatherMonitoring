@@ -5,14 +5,16 @@ namespace RealTimeWeatherMonitoring.Utilities
 {
     public static class ConfigLoader
     {
-        public static BotsConfig Load(string path = "appsettings.json")
+        private const string ConfigFilePath = "appsettings.json";
+
+        public static BotsConfig Load()
         {
             var configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile(path, optional: false, reloadOnChange: true)
+                .AddJsonFile(ConfigFilePath, optional: false, reloadOnChange: true)
                 .Build();
 
-            return configuration.GetSection("Bots").Get<BotsConfig>() ?? new BotsConfig();
+            return configuration.GetSection(ConfigKeys.BotsSection).Get<BotsConfig>() ?? new BotsConfig();
         }
     }
 }

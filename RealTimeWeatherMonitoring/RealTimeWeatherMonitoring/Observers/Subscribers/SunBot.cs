@@ -3,29 +3,16 @@ using RealTimeWeatherMonitoring.Models;
 
 namespace RealTimeWeatherMonitoring.Observers.Subscribers
 {
-    public class SunBot : ISubscriber
+    public class SunBot : BaseBot<SunBotConfig>
     {
-        private readonly SunBotConfig _sunBotConfig;
-        public string Name => GetType().Name;
-        public bool Enabled => _sunBotConfig.Enabled;
+        public SunBot(SunBotConfig config) : base(config) { }
 
-        public SunBot(SunBotConfig sunBotConfig)
+        public override void Update(WeatherData weatherData)
         {
-            _sunBotConfig = sunBotConfig;
-        }
-
-        public void Update(WeatherData weatherData)
-        {
-            if (Enabled && weatherData.Temperature >= _sunBotConfig.TemperatureThreshold)
+            if (Enabled && weatherData.Temperature >= _config.TemperatureThreshold)
             {
                 Activate();
             }
-        }
-
-        private void Activate()
-        {
-            Console.WriteLine($"{Name} activated!");
-            Console.WriteLine(_sunBotConfig.Message);
         }
     }
 }
