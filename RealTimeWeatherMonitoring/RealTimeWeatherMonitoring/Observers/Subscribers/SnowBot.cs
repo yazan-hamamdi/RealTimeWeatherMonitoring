@@ -9,6 +9,9 @@ namespace RealTimeWeatherMonitoring.Observers.Subscribers
 
         public override void Update(WeatherData weatherData)
         {
+            if (weatherData == null)
+                throw new ArgumentNullException(nameof(weatherData));
+
             if (Enabled && weatherData.Temperature <= _config.TemperatureThreshold)
             {
                 Activate();
