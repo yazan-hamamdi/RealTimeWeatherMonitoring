@@ -1,4 +1,4 @@
-﻿namespace RealTimeWeatherMonitoring.Interfaces
+﻿namespace RealTimeWeatherMonitoring.DTOs
 {
     public interface IBotConfig
     {

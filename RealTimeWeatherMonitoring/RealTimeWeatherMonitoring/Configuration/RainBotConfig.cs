@@ -1,4 +1,4 @@
-﻿namespace RealTimeWeatherMonitoring.Models
+﻿namespace RealTimeWeatherMonitoring.DTOs
 {
     public class RainBotConfig : BotConfig
     {

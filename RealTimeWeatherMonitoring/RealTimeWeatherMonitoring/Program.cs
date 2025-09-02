@@ -1,5 +1,6 @@
 ﻿using RealTimeWeatherMonitoring.Factories;
 using RealTimeWeatherMonitoring.Models;
+using RealTimeWeatherMonitoring.Observers.Subjects;
 using RealTimeWeatherMonitoring.Utilities;
 
 namespace RealTimeWeatherMonitoring
@@ -8,26 +9,30 @@ namespace RealTimeWeatherMonitoring
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Starting Weather Monitoring Test...");
+            Console.WriteLine("Enter weather data (JSON or XML)");
+            string input = Console.ReadLine();
 
-            var botsConfig = ConfigLoader.Load();
-            var bots = BotFactory.CreateBots(botsConfig);
-
-            var testWeatherData = new WeatherData
+            try
             {
-                Temperature = 32, 
-                Humidity = 75     
-            };
+                var selector = new WeatherDataParserSelector();
+                var parser = selector.SelectParser(input);
 
-            Console.WriteLine("\n--- Simulating Weather Update ---\n");
+                WeatherData weatherData = parser.Parse(input);
 
-            foreach (var bot in bots)
-            {
-                bot.Update(testWeatherData);
+                var config = ConfigLoader.Load();
+
+                var bots = BotFactory.CreateBots(config);
+
+                var station = new WeatherStation();
+                foreach (var bot in bots)
+                    station.Subscribe(bot);
+
+                station.UpdateWeatherData(weatherData);
             }
-
-            Console.WriteLine("\nTest completed.");
-            Console.ReadLine(); 
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
         }
     }
 }

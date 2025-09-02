@@ -1,6 +1,4 @@
-﻿using RealTimeWeatherMonitoring.Models;
-
-namespace RealTimeWeatherMonitoring.DTOs
+﻿namespace RealTimeWeatherMonitoring.DTOs
 {
     public class BotsConfig
     {

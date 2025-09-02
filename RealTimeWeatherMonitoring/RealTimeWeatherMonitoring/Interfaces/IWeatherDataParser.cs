@@ -6,7 +6,7 @@ namespace RealTimeWeatherMonitoring.Interfaces
     {
         public interface IWeatherDataParser
         {
-            bool TryParse(string input, out WeatherData data);
+            public WeatherData Parse(string input);
         }
     }
 }

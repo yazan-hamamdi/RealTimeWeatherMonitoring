@@ -1,6 +1,4 @@
-﻿using RealTimeWeatherMonitoring.Interfaces;
-
-namespace RealTimeWeatherMonitoring.Models
+﻿namespace RealTimeWeatherMonitoring.DTOs
 {
     public class BotConfig : IBotConfig
     {

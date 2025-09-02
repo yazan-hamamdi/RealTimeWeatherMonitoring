@@ -1,4 +1,5 @@
-﻿using RealTimeWeatherMonitoring.Interfaces;
+﻿using RealTimeWeatherMonitoring.DTOs;
+using RealTimeWeatherMonitoring.Interfaces;
 using RealTimeWeatherMonitoring.Models;
 
 namespace RealTimeWeatherMonitoring.Observers.Subscribers

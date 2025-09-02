@@ -1,5 +1,4 @@
-﻿using RealTimeWeatherMonitoring.Enums;
-using RealTimeWeatherMonitoring.Interfaces.RealTimeWeatherMonitoring.Interfaces;
+﻿using RealTimeWeatherMonitoring.Interfaces.RealTimeWeatherMonitoring.Interfaces;
 using RealTimeWeatherMonitoring.Models;
 using System.Text.Json;
 
@@ -7,17 +6,16 @@ namespace RealTimeWeatherMonitoring.Parsers
 {
     public class JsonWeatherDataParser : IWeatherDataParser
     {
-        public bool TryParse(string input, out WeatherData data)
+        public WeatherData Parse(string input)
         {
             try
             {
-                data = JsonSerializer.Deserialize<WeatherData>(input) ?? new WeatherData();
-                return true;
+                return JsonSerializer.Deserialize<WeatherData>(input)
+                       ?? throw new InvalidOperationException("Failed to parse JSON into WeatherData.");
             }
-            catch
+            catch (JsonException ex)
             {
-                data = null!;
-                return false;
+                throw new InvalidOperationException($"Invalid JSON format: {ex.Message}", ex);
             }
         }
     }

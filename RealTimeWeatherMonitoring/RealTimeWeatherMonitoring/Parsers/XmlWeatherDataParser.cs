@@ -1,5 +1,4 @@
-﻿using RealTimeWeatherMonitoring.Enums;
-using RealTimeWeatherMonitoring.Interfaces.RealTimeWeatherMonitoring.Interfaces;
+﻿using RealTimeWeatherMonitoring.Interfaces.RealTimeWeatherMonitoring.Interfaces;
 using RealTimeWeatherMonitoring.Models;
 using System.Xml.Serialization;
 
@@ -7,19 +6,18 @@ namespace RealTimeWeatherMonitoring.Parsers
 {
     public class XmlWeatherDataParser : IWeatherDataParser
     {
-        public bool TryParse(string input, out WeatherData data)
+        public WeatherData Parse(string input)
         {
             try
             {
                 var serializer = new XmlSerializer(typeof(WeatherData));
                 using var reader = new StringReader(input);
-                data = (WeatherData)(serializer.Deserialize(reader) ?? new WeatherData());
-                return true;
+                return (WeatherData)(serializer.Deserialize(reader)
+                       ?? throw new InvalidOperationException("Failed to parse XML into WeatherData."));
             }
-            catch
+            catch (InvalidOperationException ex)
             {
-                data = null!;
-                return false;
+                throw new InvalidOperationException($"Invalid XML format: {ex.Message}", ex);
             }
         }
     }
